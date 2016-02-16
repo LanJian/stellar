@@ -54,15 +54,17 @@ public class ShipMovement : MonoBehaviour {
 		if (target == Vector3.zero) {
 			return;
 		}
-			targetVector = (target - transform.position).normalized;
+
+		targetVector = (target - transform.position).normalized;
+		bisector = (transform.forward + targetVector).normalized;
 
 		Debug.DrawRay (transform.position, target - transform.position);
-		Debug.DrawRay (transform.position, bisector * 10);
-		Debug.DrawRay (transform.position, transform.forward * 10);
-		Debug.DrawRay (transform.position, targetVector * 10);
+		Debug.DrawRay (transform.position, bisector * 10, Color.blue);
+		Debug.DrawRay (transform.position, transform.forward * 10, Color.red);
+		Debug.DrawRay (transform.position, targetVector * 10, Color.green);
 
-		if (Mathf.Abs (Vector3.Dot (transform.forward, targetVector) - 1) < 0.01 && rb.angularVelocity.magnitude < 0.01) {
-			rb.angularDrag = 100;
+		if (Mathf.Abs (Vector3.Dot (bisector, targetVector) - 1) < 0.0001) {
+			rb.angularDrag = 3;
 			// transform.LookAt (target);
 			//rb.angularVelocity = Vector3.zero;
 		}
@@ -78,4 +80,3 @@ public class ShipMovement : MonoBehaviour {
 		}
 	}
 }
-
